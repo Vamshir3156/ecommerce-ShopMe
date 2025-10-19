@@ -1,7 +1,22 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-body { @apply bg-gray-50 text-gray-900; }
-.btn{ @apply px-4 py-2 rounded-md border font-medium hover:opacity-90 transition; }
-.btn-primary{ @apply bg-black text-white; }
-.card{ @apply bg-white rounded-xl shadow-sm border p-4; }
+body {
+  @apply bg-gray-50 text-gray-900;
+}
+.btn {
+  @apply px-4 py-2 rounded-md border font-medium hover:opacity-90 transition;
+}
+.btn-primary {
+  @apply bg-black text-white;
+}
+.card {
+  @apply bg-white rounded-xl shadow-sm border p-4;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
