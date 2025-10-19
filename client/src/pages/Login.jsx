@@ -1,5 +1,47 @@
-import { useDispatch, useSelector } from 'react-redux'
-import { login } from '../store/slices/authSlice'
-import { useState } from 'react'
-import { useLocation, useNavigate, Link } from 'react-router-dom'
-export default function Login(){ const [email,setEmail]=useState('demo@shop.dev'); const [password,setPassword]=useState('Demo@123'); const error=useSelector(s=>s.auth.error); const d=useDispatch(); const nav=useNavigate(); const loc=useLocation(); const next=loc.state?.from?.pathname || '/'; return (<div className='max-w-sm mx-auto card'><h2 className='text-xl font-bold mb-4'>Welcome back</h2><input className='w-full border rounded px-3 py-2 mb-2' placeholder='Email' value={email} onChange={e=>setEmail(e.target.value)} /><input type='password' className='w-full border rounded px-3 py-2 mb-2' placeholder='Password' value={password} onChange={e=>setPassword(e.target.value)} />{error && <p className='text-sm text-red-600 mb-2'>{error}</p>}<button className='btn btn-primary w-full' onClick={async()=>{ const r=await d(login({email,password})); if(r.type.endsWith('fulfilled')) nav(next) }}>Log in</button><p className='text-sm mt-3'>No account? <Link to='/register' className='underline'>Create one</Link></p></div>) }
+import { useDispatch, useSelector } from "react-redux";
+import { login } from "../store/slices/authSlice";
+import { useState } from "react";
+import { useLocation, useNavigate, Link } from "react-router-dom";
+export default function Login() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const error = useSelector((s) => s.auth.error);
+  const d = useDispatch();
+  const nav = useNavigate();
+  const loc = useLocation();
+  const next = loc.state?.from?.pathname || "/";
+  return (
+    <div className="max-w-sm mx-auto card">
+      <h2 className="text-xl font-bold mb-4">Welcome back</h2>
+      <input
+        className="w-full border rounded px-3 py-2 mb-2"
+        placeholder="Email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+      />
+      <input
+        type="password"
+        className="w-full border rounded px-3 py-2 mb-2"
+        placeholder="Password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+      />
+      {error && <p className="text-sm text-red-600 mb-2">{error}</p>}
+      <button
+        className="btn btn-primary w-full"
+        onClick={async () => {
+          const r = await d(login({ email, password }));
+          if (r.type.endsWith("fulfilled")) nav(next);
+        }}
+      >
+        Log in
+      </button>
+      <p className="text-sm mt-3">
+        No account?{" "}
+        <Link to="/register" className="underline">
+          Create one
+        </Link>
+      </p>
+    </div>
+  );
+}
