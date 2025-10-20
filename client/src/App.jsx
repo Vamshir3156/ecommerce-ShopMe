@@ -9,7 +9,10 @@ import Register from "./pages/Register.jsx";
 import Profile from "./pages/Profile.jsx";
 import Protected from "./components/Protected.jsx";
 import AdminOrders from "./pages/admin/Orders.jsx";
-
+import FreeShippingPage from "./pages/FreeShippingPage";
+import EasyReturnsPage from "./pages/EasyReturnsPage";
+import PaymentsPage from "./pages/PaymentsPage";
+import SupportPage from "./pages/SupportPage";
 import AdminGuard from "./components/AdminGuard.jsx";
 import AdminProducts from "./pages/admin/Products.jsx";
 
@@ -51,6 +54,10 @@ export default function App() {
         />
 
         <Route path="*" element={<Navigate to="/" />} />
+        <Route path="/deals/free-shipping" element={<FreeShippingPage />} />
+        <Route path="/deals/easy-returns" element={<EasyReturnsPage />} />
+        <Route path="/payments" element={<PaymentsPage />} />
+        <Route path="/support" element={<SupportPage />} />
       </Routes>
     </Layout>
   );
