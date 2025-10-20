@@ -1,22 +1,38 @@
-# ShopX — Advanced E‑Commerce (JWT, React, SQLite, No External DB)
+ShopX is a modern eCommerce web application built using the MERN-style stack (React + Node + Express + SQLite) with JWT authentication, Stripe payments, and a responsive, Tailwind-powered UI.
+It supports both User and Admin roles, allowing product browsing, checkout, order management, and more.
 
-**Zero external setup.** Backend uses SQLite (file) + JWT in httpOnly cookies. Frontend is React (Vite) + Tailwind + Redux Toolkit.
+-User Features
+Register, Login, and Logout using JWT Authentication
+Add to Cart, Update Quantity, Remove Items
+Secure Checkout with Stripe Payments
+View Order History & Order Status
+Product Search and Category Filters
+Responsive UI with modern Tailwind CSS styling
+“Trust Bar” & “Support Center” for 24/7 customer help
+Admin Features
+Add, Edit, or Delete Products
+View All Orders and Customer Details
+Manage Users and Roles (Admin/User)
+Dashboard for store overview
 
-## Quick Start
+# Quick Start
 
 ```bash
 cd ecom-advanced-jwt
 npm i
-cp server/.env.example server/.env
 npm run dev
 ```
 
 Open client at http://localhost:5173 and API at http://localhost:5000
 
-### Default Accounts
-- Admin: admin@shop.dev / Admin@123
-- User: demo@shop.dev / Demo@123
+## Default Accounts
 
-### Notes
-- To change client origin, set CLIENT_ORIGIN in `server/.env`.
-- For production, set real JWT secrets and `NODE_ENV=production`.
+- Admin role: admin@shop.dev / Admin@123
+- User role: demo@shop.dev / Demo@123
+
+### Test Payment
+
+Card Number: 4242 4242 4242 4242
+Expiry: Any future date
+CVC: Any 3 digits
+ZIP: Any 5 digits
