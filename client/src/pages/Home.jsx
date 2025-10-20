@@ -6,6 +6,7 @@ import { useSearchParams } from "react-router-dom";
 
 import TrustBar from "../components/TrustBar";
 import FilterChips from "../components/FilterChips";
+import AdCarousel from "../components/AdCarousel"; // <- add
 
 export default function Home() {
   const dispatch = useDispatch();
@@ -16,20 +17,16 @@ export default function Home() {
   const cat = searchParams.get("cat") || "all";
   const sort = searchParams.get("sort") || "popular";
 
-  // Server-side search by q (keeps your current API behavior)
+  // Fetch by search term (server-side)
   useEffect(() => {
     dispatch(fetchProducts(q ? { q } : {}));
   }, [dispatch, q]);
 
-  // Client-side category filter + sort
+  // Client-side filter + sort
   const filtered = useMemo(() => {
     let arr = list;
+    if (cat !== "all") arr = arr.filter((p) => p.category === cat);
 
-    if (cat !== "all") {
-      arr = arr.filter((p) => p.category === cat);
-    }
-
-    // Optional: re-apply q filter locally, in case API doesn't filter
     if (q) {
       const ql = q.toLowerCase();
       arr = arr.filter(
@@ -39,7 +36,6 @@ export default function Home() {
       );
     }
 
-    // Sorting
     const copy = arr.slice();
     if (sort === "price-asc") copy.sort((a, b) => a.price - b.price);
     if (sort === "price-desc") copy.sort((a, b) => b.price - a.price);
@@ -47,34 +43,47 @@ export default function Home() {
       copy.sort((a, b) =>
         (b.created_at || "").localeCompare(a.created_at || "")
       );
-    // "popular" keeps original order
     return copy;
   }, [list, q, cat, sort]);
 
+  // Ads for the carousel (use your own images/links)
+  const ads = [
+    {
+      id: "ad1",
+      image:
+        "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?q=80&w=1600&auto=format&fit=crop",
+      title: "Pro Laptops Week",
+      subtitle: "Save up to 25% on creator laptops.",
+      ctaText: "Shop laptops",
+      href: "/?cat=Computers",
+      tint: "from-slate-900/80 to-transparent",
+    },
+    {
+      id: "ad2",
+      image:
+        "https://images.unsplash.com/photo-1512496015851-a90fb38ba796?q=80&w=1600&auto=format&fit=crop",
+      title: "Audio Mega Sale",
+      subtitle: "Headphones, speakers & more.",
+      ctaText: "Explore audio",
+      href: "/?cat=Audio",
+      tint: "from-black/75 to-transparent",
+    },
+    {
+      id: "ad3",
+      image:
+        "https://plus.unsplash.com/premium_photo-1712764121254-d9867c694b81?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8d2VhcmFibGUlMjB0ZWNofGVufDB8fDB8fHww&fm=jpg&q=60&w=3000",
+      title: "Wearables from $49",
+      subtitle: "Track more. Charge less.",
+      ctaText: "See wearables",
+      href: "/?cat=Wearables",
+      tint: "from-indigo-900/70 to-transparent",
+    },
+  ];
+
   return (
     <div className="max-w-7xl mx-auto px-4">
-      {/* Hero */}
-      <div className="rounded-2xl bg-gradient-to-r from-gray-900 to-gray-700 text-white p-8 mb-6">
-        <h1 className="text-3xl font-black">Fall Tech Event</h1>
-        <p className="mt-2 text-gray-300">
-          Save up to 40% on select gear. Free returns.
-        </p>
-        {(q || cat !== "all") && (
-          <p className="mt-3 text-sm text-gray-200">
-            {q && (
-              <>
-                Showing results for: <strong>{q}</strong>
-              </>
-            )}{" "}
-            {cat !== "all" && (
-              <>
-                {" "}
-                · Category: <strong>{cat}</strong>
-              </>
-            )}
-          </p>
-        )}
-      </div>
+      {/* Ad carousel replaces hero */}
+      <AdCarousel items={ads} className="mb-6" />
 
       {/* Trust bar + Filters */}
       <TrustBar />
