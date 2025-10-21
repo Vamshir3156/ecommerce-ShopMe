@@ -2,6 +2,16 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../store/slices/cartSlice";
+const API_BASE = (
+  import.meta.env.VITE_API_URL || "http://localhost:5000"
+).replace(/\/$/, "");
+
+// Turn relative "/images/..." into absolute "https://your-api.com/images/..."
+function resolveImage(src) {
+  if (!src) return "";
+  if (/^https?:\/\//i.test(src)) return src; // already absolute
+  return `${API_BASE}${src.startsWith("/") ? "" : "/"}${src}`;
+}
 
 export default function ProductCard({ p }) {
   const d = useDispatch();
