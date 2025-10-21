@@ -36,7 +36,7 @@ export default function ProductCard({ p }) {
       <Link to={`/product/${p.id}`} className="block">
         <div className="relative">
           <img
-            src={p.image}
+            src={resolveImage(p.image)}
             alt={p.title}
             className="w-full h-56 object-cover transform group-hover:scale-105 transition duration-500"
           />
