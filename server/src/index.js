@@ -84,7 +84,13 @@ app.use(express.json());
 app.use(cookieParser());
 
 // --- Static ---
-app.use("/images", express.static(path.join(__dirname, "public", "images")));
+// --- Static (allow cross-origin only for images) ---
+app.use(
+  "/images",
+  // allow other origins to embed/consume these resources
+  helmet.crossOriginResourcePolicy({ policy: "cross-origin" }),
+  express.static(path.join(__dirname, "public", "images"))
+);
 
 // --- Healthcheck ---
 app.get("/api/health", (_req, res) => res.json({ ok: true }));
