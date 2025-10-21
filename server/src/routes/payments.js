@@ -1,4 +1,3 @@
-// ✅ Load environment variables before anything else
 import dotenv from "dotenv";
 import path from "path";
 import { fileURLToPath } from "url";
@@ -13,7 +12,6 @@ import { requireAuth } from "../middleware/auth.js";
 
 const router = Router();
 
-// ✅ Initialize Stripe safely after .env is loaded
 const STRIPE_KEY = process.env.STRIPE_SECRET_KEY;
 if (!STRIPE_KEY) {
   console.error("❌ Stripe key missing — check server/.env");
@@ -22,7 +20,6 @@ if (!STRIPE_KEY) {
 const stripe = new Stripe(STRIPE_KEY);
 console.log("✅ Stripe key prefix:", STRIPE_KEY.slice(0, 10));
 
-// Function to safely calculate total amount in cents
 function computeAmount(items) {
   let total = 0;
   for (const it of items) {
@@ -33,7 +30,6 @@ function computeAmount(items) {
   return total;
 }
 
-// POST /api/payments/create-intent
 router.post("/create-intent", requireAuth, async (req, res) => {
   try {
     const { items } = req.body;

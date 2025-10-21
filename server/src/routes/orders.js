@@ -50,7 +50,6 @@ router.get("/admin/all", requireAuth, requireAdmin, (req, res) => {
   res.json(out);
 });
 
-// GET /api/orders/admin/:id → single order detail (admin only)
 router.get("/admin/:id", requireAuth, requireAdmin, (req, res) => {
   const r = db
     .prepare(
