@@ -1,7 +1,7 @@
 import Database from "better-sqlite3";
 import bcrypt from "bcryptjs";
 const { hashSync } = bcrypt;
-const DB_PATH = process.env.DB_PATH || "ecom.db";
+const DB_PATH = process.env.DB_PATH || "tmp/ecom.db";
 const db = new Database(DB_PATH);
 
 db.exec(`
