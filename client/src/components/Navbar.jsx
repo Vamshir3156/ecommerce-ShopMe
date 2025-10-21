@@ -57,13 +57,11 @@ export default function Navbar() {
 
   return (
     <header className="sticky top-0 z-40">
-      {/* Hairline gradient */}
       <div className="h-[2px] bg-gradient-to-r from-blue-600 via-indigo-500 to-blue-600 opacity-60" />
 
       <div className="backdrop-blur-xl bg-white/80 supports-[backdrop-filter]:bg-white/60 border-b border-white/70 shadow-[0_6px_30px_-12px_rgba(31,41,55,0.18)]">
         <div className="max-w-7xl mx-auto px-3 sm:px-4">
           <div className="h-16 flex items-center justify-between gap-3">
-            {/* Left: Brand + burger */}
             <div className="flex items-center gap-3">
               <button
                 className="sm:hidden inline-flex items-center justify-center w-10 h-10 rounded-xl border border-gray-200 bg-white/70 hover:bg-white transition"
@@ -89,7 +87,6 @@ export default function Navbar() {
               </Link>
             </div>
 
-            {/* Center: Search */}
             <form
               onSubmit={onSubmit}
               className="hidden sm:block flex-1 max-w-xl"
@@ -116,7 +113,6 @@ export default function Navbar() {
               </div>
             </form>
 
-            {/* Right: Actions */}
             <nav className="hidden sm:flex items-center gap-2">
               <PillLink to="/">Home</PillLink>
 
@@ -181,7 +177,6 @@ export default function Navbar() {
             </nav>
           </div>
 
-          {/* Mobile drawer */}
           {open && (
             <div className="sm:hidden pb-4 space-y-3">
               <form onSubmit={onSubmit}>

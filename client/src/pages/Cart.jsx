@@ -56,9 +56,6 @@ export default function Cart() {
                   className="group rounded-3xl border border-gray-200/60 dark:border-white/10 bg-white/70 dark:bg-white/5 backdrop-blur-xl shadow-xl p-4 sm:p-5 transition hover:-translate-y-[1px] hover:shadow-2xl"
                 >
                   <div className="flex items-center gap-4">
-                    {/* (Optional) thumbnail — pass image in cart to show it */}
-                    {/* <img src={i.image} alt={i.title} className="w-16 h-16 rounded-2xl object-cover hidden sm:block" /> */}
-
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2">
                         <p className="font-semibold truncate">{i.title}</p>

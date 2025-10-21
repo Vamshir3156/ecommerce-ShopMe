@@ -12,7 +12,6 @@ export default function SupportPage() {
     if (!t) return;
     setMessages((m) => [...m, { who: "you", text: t }]);
     setText("");
-    // (Optional) mock agent reply
     setTimeout(() => {
       setMessages((m) => [
         ...m,

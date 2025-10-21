@@ -6,10 +6,9 @@ const API_BASE = (
   import.meta.env.VITE_API_URL || "http://localhost:5000"
 ).replace(/\/$/, "");
 
-// Turn relative "/images/..." into absolute "https://your-api.com/images/..."
 function resolveImage(src) {
   if (!src) return "";
-  if (/^https?:\/\//i.test(src)) return src; // already absolute
+  if (/^https?:\/\//i.test(src)) return src;
   return `${API_BASE}${src.startsWith("/") ? "" : "/"}${src}`;
 }
 
@@ -32,7 +31,6 @@ export default function ProductCard({ p }) {
 
   return (
     <div className="group bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100 hover:border-gray-300">
-      {/* Clickable area = image + text */}
       <Link to={`/product/${p.id}`} className="block">
         <div className="relative">
           <img
@@ -53,7 +51,6 @@ export default function ProductCard({ p }) {
         </div>
       </Link>
 
-      {/* Controls outside the Link so clicks don’t navigate */}
       <div className="px-4 pb-4">
         <div className="flex items-center justify-between">
           <p className="text-xl font-extrabold text-gray-900">

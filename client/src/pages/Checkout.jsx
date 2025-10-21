@@ -32,13 +32,11 @@ function CheckoutForm() {
 
     try {
       setLoading(true);
-      //Ask backend to create a PaymentIntent
       const { data } = await api.post("/payments/create-intent", {
         items: items.map((i) => ({ id: i.id, qty: i.qty })),
       });
       const clientSecret = data.clientSecret;
 
-      //Confirm payment with card input
       const result = await stripe.confirmCardPayment(clientSecret, {
         payment_method: { card: elements.getElement(CardElement) },
       });
@@ -50,7 +48,6 @@ function CheckoutForm() {
       }
 
       if (result.paymentIntent.status === "succeeded") {
-        //Save the order after successful payment
         const { data: order } = await api.post("/orders", {
           items: items.map((i) => ({
             productId: i.id,

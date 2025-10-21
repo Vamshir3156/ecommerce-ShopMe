@@ -1,13 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 
-/**
- * AdCarousel
- * props:
- *  - items: [{ id, image, title, subtitle, ctaText, href, tint }]  // tint = 'from-slate-900/80 to-transparent' etc.
- *  - interval: ms (default 4500)
- *  - className: extra classes for wrapper
- */
 export default function AdCarousel({
   items = [],
   interval = 1200,
@@ -49,7 +42,6 @@ export default function AdCarousel({
   const prev = () => go(i - 1);
   const next = () => go(i + 1);
 
-  // Touch / drag swipe
   useEffect(() => {
     const el = trackRef.current;
     if (!el) return;
@@ -91,7 +83,6 @@ export default function AdCarousel({
       onMouseEnter={() => (hovering.current = true)}
       onMouseLeave={() => (hovering.current = false)}
     >
-      {/* Track */}
       <div
         ref={trackRef}
         className="flex transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]"
@@ -108,13 +99,13 @@ export default function AdCarousel({
               loading="eager"
               className="absolute inset-0 w-full h-full object-cover"
             />
-            {/* Gradient tint for text readability */}
+
             <div
               className={`absolute inset-0 bg-gradient-to-r ${
                 ad.tint || "from-slate-900/80 to-transparent"
               }`}
             />
-            {/* Content */}
+
             <div className="relative h-full flex flex-col justify-center pl-6 sm:pl-8 md:pl-10 text-white">
               <h2 className="text-2xl md:text-3xl font-black drop-shadow-md">
                 {ad.title}
@@ -135,7 +126,6 @@ export default function AdCarousel({
         ))}
       </div>
 
-      {/* Arrows */}
       {count > 1 && (
         <>
           <button
@@ -155,7 +145,6 @@ export default function AdCarousel({
         </>
       )}
 
-      {/* Dots */}
       {count > 1 && (
         <div className="absolute bottom-2 left-0 right-0 flex justify-center gap-1.5">
           {safeItems.map((_, idx) => (

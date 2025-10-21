@@ -46,7 +46,6 @@ export default function Home() {
     return copy;
   }, [list, q, cat, sort]);
 
-  // Ads for the carousel (use your own images/links)
   const ads = [
     {
       id: "ad1",
@@ -82,14 +81,11 @@ export default function Home() {
 
   return (
     <div className="max-w-7xl mx-auto px-4">
-      {/* Ad carousel replaces hero */}
       <AdCarousel items={ads} className="mb-6" />
 
-      {/* Trust bar + Filters */}
       <TrustBar />
       <FilterChips products={list} />
 
-      {/* Grid */}
       {filtered.length === 0 ? (
         <div className="card p-6 text-center">
           <p className="font-medium">No products found.</p>
