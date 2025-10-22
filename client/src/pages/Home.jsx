@@ -22,6 +22,13 @@ export default function Home() {
     dispatch(fetchProducts(q ? { q } : {}));
   }, [dispatch, q]);
 
+  // ✅ Refetch when App.jsx signals the backend is awake
+  useEffect(() => {
+    const handleReady = () => dispatch(fetchProducts(q ? { q } : {}));
+    window.addEventListener("server-ready", handleReady);
+    return () => window.removeEventListener("server-ready", handleReady);
+  }, [dispatch, q]);
+
   // Client-side filter + sort
   const filtered = useMemo(() => {
     let arr = list;
