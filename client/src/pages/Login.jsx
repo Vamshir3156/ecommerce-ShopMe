@@ -3,8 +3,8 @@ import { login } from "../store/slices/authSlice";
 import { useState } from "react";
 import { useLocation, useNavigate, Link } from "react-router-dom";
 export default function Login() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("demo@shop.dev");
+  const [password, setPassword] = useState("Demo@123");
   const error = useSelector((s) => s.auth.error);
   const d = useDispatch();
   const nav = useNavigate();

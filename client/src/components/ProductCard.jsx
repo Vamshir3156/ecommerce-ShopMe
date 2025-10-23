@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../store/slices/cartSlice";
+
 const API_BASE = (
   import.meta.env.VITE_API_URL || "http://localhost:5000"
 ).replace(/\/$/, "");
@@ -15,6 +16,7 @@ function resolveImage(src) {
 export default function ProductCard({ p }) {
   const d = useDispatch();
   const [qty, setQty] = useState(1);
+  const [justAdded, setJustAdded] = useState(false);
 
   const dec = (e) => {
     e.stopPropagation();
@@ -24,9 +26,12 @@ export default function ProductCard({ p }) {
     e.stopPropagation();
     setQty((q) => Math.min(99, q + 1));
   };
+
   const add = (e) => {
     e.stopPropagation();
     d(addToCart({ id: p.id, title: p.title, price: Number(p.price), qty }));
+    setJustAdded(true);
+    setTimeout(() => setJustAdded(false), 1200); // reset UI after 1.2s
   };
 
   return (
@@ -84,9 +89,15 @@ export default function ProductCard({ p }) {
         <button
           type="button"
           onClick={add}
-          className="btn btn-primary w-full mt-3 bg-gradient-to-r from-blue-600 to-indigo-500 hover:from-indigo-500 hover:to-blue-600 text-white font-semibold py-2 rounded-xl shadow-md hover:shadow-lg transition-all"
+          disabled={justAdded}
+          className={[
+            "w-full mt-3 py-2 rounded-xl font-semibold shadow-md transition-all duration-300",
+            justAdded
+              ? "bg-green-500 text-white ring-2 ring-green-300 scale-[0.98] cursor-default"
+              : "bg-gradient-to-r from-blue-600 to-indigo-500 hover:from-indigo-500 hover:to-blue-600 text-white",
+          ].join(" ")}
         >
-          🛒 Add to cart
+          {justAdded ? "✓ Added to cart" : "🛒 Add to cart"}
         </button>
       </div>
     </div>

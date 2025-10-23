@@ -116,32 +116,31 @@ export default function Navbar() {
             <nav className="hidden sm:flex items-center gap-2">
               <PillLink to="/">Home</PillLink>
 
-              {user?.role !== "admin" && (
-                <NavLink
-                  to="/cart"
-                  className={({ isActive }) =>
-                    [
-                      "px-3 py-1.5 rounded-xl text-sm transition-colors inline-flex items-center gap-1.5",
-                      isActive
-                        ? "bg-gray-900 text-white"
-                        : "text-gray-700 hover:bg-gray-100",
-                    ].join(" ")
-                  }
+              {/* {user?.role !== "admin" && ( */}
+              <NavLink
+                to="/cart"
+                className={({ isActive }) =>
+                  [
+                    "px-3 py-1.5 rounded-xl text-sm transition-colors inline-flex items-center gap-1.5",
+                    isActive
+                      ? "bg-gray-900 text-white"
+                      : "text-gray-700 hover:bg-gray-100",
+                  ].join(" ")
+                }
+              >
+                Cart
+                <span
+                  className={[
+                    "ml-1 inline-flex items-center justify-center min-w-[1.25rem] h-5 px-1.5 rounded-full text-[11px] font-semibold",
+                    hasItems
+                      ? "bg-blue-600 text-white"
+                      : "bg-gray-200 text-gray-700",
+                  ].join(" ")}
+                  aria-label={`${cartCount} items in cart`}
                 >
-                  Cart
-                  <span
-                    className={[
-                      "ml-1 inline-flex items-center justify-center min-w-[1.25rem] h-5 px-1.5 rounded-full text-[11px] font-semibold",
-                      hasItems
-                        ? "bg-blue-600 text-white"
-                        : "bg-gray-200 text-gray-700",
-                    ].join(" ")}
-                    aria-label={`${cartCount} items in cart`}
-                  >
-                    {cartCount}
-                  </span>
-                </NavLink>
-              )}
+                  {cartCount}
+                </span>
+              </NavLink>
 
               {AdminLinks}
 

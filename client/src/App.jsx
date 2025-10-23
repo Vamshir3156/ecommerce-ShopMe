@@ -21,7 +21,6 @@ const API_BASE = (
   import.meta.env.VITE_API_URL || "http://localhost:5000"
 ).replace(/\/$/, "");
 
-// small helper: fetch with a per-attempt timeout
 async function fetchWithTimeout(url, ms = 6000) {
   const ctrl = new AbortController();
   const id = setTimeout(() => ctrl.abort(), ms);
@@ -39,24 +38,22 @@ async function fetchWithTimeout(url, ms = 6000) {
 export default function App() {
   const [waking, setWaking] = useState(true);
   const [status, setStatus] = useState("Connecting to server…");
+  const [attempt, setAttempt] = useState(1);
 
-  // ⏱ countdown state: start 45s, extend +30s whenever it hits 5s
   const [remainingMs, setRemainingMs] = useState(45000);
-  const extendLockRef = useRef(false); // prevents multiple +30s per <5s window
+  const extendLockRef = useRef(false);
 
-  // Countdown tick (only while waking)
   useEffect(() => {
     if (!waking) return;
     const t = setInterval(() => {
       setRemainingMs((prev) => {
         let next = Math.max(0, prev - 1000);
 
-        // extend once when we cross into <=5s
         if (next <= 5000 && !extendLockRef.current) {
           extendLockRef.current = true;
-          next += 30000; // +30s
+          next += 30000;
+          setAttempt((a) => a + 1);
         } else if (next > 5000 && extendLockRef.current) {
-          // reset lock when we move back above 5s after an extension
           extendLockRef.current = false;
         }
 
@@ -66,35 +63,30 @@ export default function App() {
     return () => clearInterval(t);
   }, [waking]);
 
-  // Poll until /api/health responds OK (no hard cap)
   useEffect(() => {
     let cancelled = false;
 
     const wakeServer = async () => {
-      let attempt = 0;
+      let tries = 0;
       while (!cancelled) {
-        attempt++;
-        setStatus(`Connecting to server… (attempt ${attempt})`);
+        tries++;
+
         try {
           const res = await fetchWithTimeout(`${API_BASE}/api/health`, 7000);
           if (res.ok) {
-            // tiny UX delay
             await new Promise((r) => setTimeout(r, 400));
             if (!cancelled) {
               setWaking(false);
-              // signal pages (Home, etc.) to refetch now that server is awake
+
               setTimeout(() => {
                 window.dispatchEvent(new Event("server-ready"));
               }, 0);
             }
             return;
           }
-        } catch {
-          // ignore; keep retrying
-        }
+        } catch {}
 
-        // exponential-ish backoff: 0.5s, 1s, 2s, 3s, 4s (capped 4s)
-        const delay = Math.min(4000, 500 * Math.pow(2, Math.min(attempt, 4)));
+        const delay = Math.min(4000, 500 * Math.pow(2, Math.min(tries, 4)));
         setStatus(`Server waking up… Please Wait :)`);
         await new Promise((r) => setTimeout(r, delay));
       }
@@ -141,6 +133,10 @@ export default function App() {
               <span className="font-semibold text-gray-900">
                 {Math.ceil(remainingMs / 1000)}s
               </span>
+            </p>
+
+            <p className="text-sm text-gray-700 mb-1">
+              🔁 Attempt: <span className="font-semibold">{attempt}</span>
             </p>
 
             <p className="text-xs text-gray-500">
