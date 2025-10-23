@@ -55,10 +55,12 @@ export default function Cart() {
                   key={i.id}
                   className="group rounded-3xl border border-gray-200/60 dark:border-white/10 bg-white/70 dark:bg-white/5 backdrop-blur-xl shadow-xl p-4 sm:p-5 transition hover:-translate-y-[1px] hover:shadow-2xl"
                 >
-                  <div className="flex items-center gap-4">
+                  <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2">
-                        <p className="font-semibold truncate">{i.title}</p>
+                        <p className="font-semibold whitespace-normal break-words">
+                          {i.title}
+                        </p>
                         <span className="text-[10px] uppercase tracking-wider bg-gray-100 dark:bg-white/10 border border-gray-200/60 dark:border-white/10 text-gray-600 dark:text-gray-400 rounded-full px-2 py-0.5">
                           In cart
                         </span>
@@ -69,8 +71,8 @@ export default function Cart() {
                     </div>
 
                     {/* Qty stepper */}
-                    <div className="flex items-center gap-2">
-                      <div className="flex items-center rounded-xl overflow-hidden border border-gray-200/70 dark:border-white/10 bg-white/60 dark:bg-white/5">
+                    <div className="flex items-center gap-2 shrink-0">
+                      <div className="flex items-center rounded-xl overflow-hidden border border-gray-200/70 dark:border-white/10 bg-white/60 dark:bg-white/5 shrink-0">
                         <button
                           type="button"
                           onClick={() => dec(i.id, i.qty)}
@@ -81,7 +83,7 @@ export default function Cart() {
                           −
                         </button>
                         <input
-                          className="w-12 text-center outline-none py-1 bg-transparent"
+                          className="w-10 sm:w-12 text-center outline-none py-1 bg-transparent"
                           inputMode="numeric"
                           pattern="[0-9]*"
                           value={i.qty}
@@ -90,7 +92,7 @@ export default function Cart() {
                         <button
                           type="button"
                           onClick={() => inc(i.id, i.qty)}
-                          className="w-9 h-9 flex items-center justify-center hover:bg-gray-50 dark:hover:bg白/10 disabled:opacity-40"
+                          className="w-9 h-9 flex items-center justify-center hover:bg-gray-50 dark:hover:bg-white/10 disabled:opacity-40"
                           disabled={i.qty >= 99}
                           aria-label={`Increase quantity of ${i.title}`}
                         >
@@ -116,35 +118,30 @@ export default function Cart() {
           </div>
 
           {/* Summary */}
-          <aside className="rounded-3xl border border-gray-200/60 dark:border-white/10 bg-white/70 dark:bg-white/5 backdrop-blur-xl shadow-xl p-6 h-fit sticky top-24 space-y-4">
+          <aside className="rounded-3xl border border-gray-200/60 dark:border-white/10 bg-white/70 dark:bg-white/5 backdrop-blur-xl shadow-xl p-6 h-fit lg:sticky lg:top-24 space-y-4">
+            {" "}
             <h3 className="text-xl font-bold">Order Summary</h3>
-
             <div className="flex items-center justify-between text-sm">
               <span className="text-gray-600 dark:text-gray-400">Items</span>
               <span className="font-medium">{totalItems}</span>
             </div>
-
             <div className="flex items-center justify-between text-sm">
               <span className="text-gray-600 dark:text-gray-400">Subtotal</span>
               <span className="font-medium">${subtotal.toFixed(2)}</span>
             </div>
-
             <div className="h-px bg-gradient-to-r from-transparent via-gray-300/60 to-transparent dark:via-white/10 my-2" />
-
             <div className="flex items-center justify-between">
               <span className="font-semibold">Total</span>
               <span className="text-2xl font-black">
                 ${subtotal.toFixed(2)}
               </span>
             </div>
-
             <Link
               to="/checkout"
               className="block text-center w-full rounded-2xl px-5 py-3 font-semibold text-white bg-gradient-to-r from-blue-600 to-indigo-500 shadow-lg hover:shadow-xl hover:-translate-y-[1px] active:translate-y-0 transition"
             >
               Proceed to checkout
             </Link>
-
             <Link
               to="/"
               className="block text-center text-sm underline text-gray-800 dark:text-gray-600 hover:text-gray-900 dark:hover:text-gray-400"
