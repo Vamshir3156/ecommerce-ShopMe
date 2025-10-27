@@ -14,6 +14,29 @@ import {
   FiImage,
 } from "react-icons/fi";
 
+const BACKEND_ROOT =
+  (api?.defaults?.baseURL && api.defaults.baseURL.replace(/\/api$/, "")) || "";
+
+const slug = (s = "") =>
+  s
+    .toLowerCase()
+    .trim()
+    .replace(/&/g, "and")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)/g, "");
+
+const defaultImageFor = (category) =>
+  `${BACKEND_ROOT}/images/${slug(category) || "item"}.jpg`;
+
+const toAbsoluteImage = (url = "") => {
+  if (!url) return "";
+  if (/^https?:\/\//i.test(url)) return url;
+  if (url.startsWith("/")) return `${BACKEND_ROOT}${url}`;
+  return `${BACKEND_ROOT}/${url}`;
+};
+
+const FALLBACK_IMG = `${BACKEND_ROOT}/images/item.jpg`;
+
 export default function AdminProducts() {
   const [list, setList] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -115,9 +138,10 @@ export default function AdminProducts() {
       const payload = {
         title: form.title.trim(),
         description: form.description?.trim() || "",
-        image:
-          form.image?.trim() ||
-          "/images/" + (form.category?.toLowerCase() || "item") + ".jpg",
+
+        image: form.image?.trim()
+          ? toAbsoluteImage(form.image.trim())
+          : defaultImageFor(form.category),
         price: Number(form.price),
         category: form.category?.trim() || "",
         stock: Number(form.stock || 0),
@@ -268,6 +292,7 @@ export default function AdminProducts() {
 
   return (
     <div className="space-y-4">
+      {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
         <h1 className="text-2xl font-black tracking-tight">Admin · Products</h1>
         <div className="flex flex-col sm:flex-row gap-2 w-full md:w-auto">
@@ -402,11 +427,18 @@ export default function AdminProducts() {
                   </td>
                   <td className="py-2 pr-3 align-center">
                     <div className="w-12 h-12 rounded-md overflow-hidden bg-gray-100 flex items-center justify-center">
-                      {p.image ? (
+                      {p.image || p.category ? (
                         <img
-                          src={p.image}
+                          src={
+                            toAbsoluteImage(p.image) ||
+                            defaultImageFor(p.category)
+                          }
                           alt="thumb"
                           className="w-full h-full object-cover"
+                          onError={(e) => {
+                            if (e.currentTarget.src !== FALLBACK_IMG)
+                              e.currentTarget.src = FALLBACK_IMG;
+                          }}
                         />
                       ) : (
                         <FiImage className="opacity-40" />
@@ -415,11 +447,6 @@ export default function AdminProducts() {
                   </td>
                   <td className="py-2 pr-3 align-center">
                     <div className="font-medium leading-5">{p.title}</div>
-                    {/* {p.description ? (
-                      <div className="text-gray-500 line-clamp-2 max-w-[40ch]">
-                        {p.description}
-                      </div>
-                    ) : null} */}
                   </td>
                   <td className="py-2 pr-3 align-center">
                     {p.category || <span className="opacity-50">—</span>}
@@ -542,25 +569,30 @@ export default function AdminProducts() {
               placeholder="/images/headphones.jpg"
               value={form.image}
               onChange={(e) => {
-                setForm({ ...form, image: e.target.value });
-                setPreviewUrl(e.target.value);
+                const val = e.target.value;
+                setForm({ ...form, image: val });
+                setPreviewUrl(val);
               }}
             />
             <div className="mt-2 flex items-center gap-3">
               <div className="w-16 h-16 rounded overflow-hidden bg-gray-100 flex items-center justify-center border">
                 {previewUrl ? (
                   <img
-                    src={previewUrl}
+                    src={toAbsoluteImage(previewUrl)}
                     alt="preview"
                     className="w-full h-full object-cover"
+                    onError={(e) => {
+                      if (e.currentTarget.src !== FALLBACK_IMG)
+                        e.currentTarget.src = FALLBACK_IMG;
+                    }}
                   />
                 ) : (
                   <FiImage className="opacity-40" />
                 )}
               </div>
               <p className="text-xs text-gray-500">
-                Leave blank to auto-use{" "}
-                <code>/images/&lt;category&gt;.jpg</code>
+                Leave blank to auto-use a backend image like{" "}
+                <code>{`${BACKEND_ROOT}/images/<category-slug>.jpg`}</code>
               </p>
             </div>
           </label>
@@ -598,7 +630,7 @@ export default function AdminProducts() {
         </div>
         <p className="mt-3 text-xs text-gray-500">
           Tip: If you leave Image blank, a default like{" "}
-          <code>/images/&lt;category&gt;.jpg</code> is used.
+          <code>{`${BACKEND_ROOT}/images/<category-slug>.jpg`}</code> is used.
         </p>
       </Modal>
     </div>
