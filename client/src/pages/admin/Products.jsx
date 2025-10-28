@@ -590,10 +590,6 @@ export default function AdminProducts() {
                   <FiImage className="opacity-40" />
                 )}
               </div>
-              <p className="text-xs text-gray-500">
-                Leave blank to auto-use a backend image like{" "}
-                <code>{`${BACKEND_ROOT}/images/<category-slug>.jpg`}</code>
-              </p>
             </div>
           </label>
           <label className="text-sm">
@@ -628,10 +624,6 @@ export default function AdminProducts() {
             />
           </label>
         </div>
-        <p className="mt-3 text-xs text-gray-500">
-          Tip: If you leave Image blank, a default like{" "}
-          <code>{`${BACKEND_ROOT}/images/<category-slug>.jpg`}</code> is used.
-        </p>
       </Modal>
     </div>
   );
